@@ -17,6 +17,7 @@ import { calculateConfidence } from "@/features/decision-wizard/domain/confidenc
 import { classifyRecommendation } from "@/features/decision-wizard/domain/recommendations";
 import { buildExplanation } from "@/features/decision-wizard/domain/explanation";
 import { deriveMethodologyInsights } from "@/features/decision-wizard/domain/methodology";
+import { CheckCircle2, Sparkles } from "lucide-react";
 
 export function WizardShell() {
   const wizard = useWizardStore();
@@ -45,12 +46,19 @@ export function WizardShell() {
 
   return (
     <div className="mx-auto w-full max-w-6xl space-y-6 px-4 py-8 md:py-10">
-      <div className="rounded-2xl border border-slate-200/80 bg-white/80 p-6 shadow-soft backdrop-blur md:p-7">
-        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-blue-700">Enterprise Decision Framework</p>
-        <h1 className="mt-2 text-2xl font-semibold text-slate-900 md:text-4xl">Is This an Agent Job?</h1>
-        <p className="mt-2 text-sm text-muted md:text-base">
-          Enterprise decision wizard for choosing the right AI delivery pattern.
-        </p>
+      <div className="rounded-2xl border border-slate-200/80 bg-gradient-to-br from-white via-slate-50/80 to-blue-50/30 p-6 shadow-soft backdrop-blur md:p-7">
+        <div className="flex items-start gap-3">
+          <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-600/10 text-blue-700">
+            <Sparkles className="h-5 w-5" aria-hidden />
+          </span>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-blue-700">Enterprise Decision Framework</p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-900 md:text-4xl">Is This an Agent Job?</h1>
+            <p className="mt-2 max-w-2xl text-sm text-slate-600 md:text-base">
+              Enterprise decision wizard for choosing the right AI delivery pattern.
+            </p>
+          </div>
+        </div>
       </div>
       <WizardProgress value={wizard.progress} currentStepIndex={wizard.currentStepIndex} />
       <AnimatePresence mode="wait">
@@ -63,9 +71,33 @@ export function WizardShell() {
         >
           {step.id === "intro" && (
             <StepCard title="Welcome" description="Assess AI suitability with gates, scoring, and recommendation logic.">
-              <p className="text-sm leading-relaxed text-muted">
-                You will answer structured questions, review all answers, and receive a clear recommendation with risks and next steps.
-              </p>
+              <div className="space-y-5">
+                <p className="text-sm leading-relaxed text-slate-600">
+                  You will answer structured questions, review your answers, and get a clear recommendation with risks and practical next steps.
+                </p>
+                <ul className="grid gap-3 sm:grid-cols-3">
+                  {[
+                    "Pattern fit (agent, workflow, RAG, and more)",
+                    "Readiness and confidence signals",
+                    "Pilot scope you can take to stakeholders"
+                  ].map((line) => (
+                    <li
+                      key={line}
+                      className="flex gap-2.5 rounded-xl border border-slate-100 bg-slate-50/80 px-3 py-3 text-xs font-medium leading-snug text-slate-700"
+                    >
+                      <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" aria-hidden />
+                      {line}
+                    </li>
+                  ))}
+                </ul>
+                <div className="rounded-xl border border-indigo-200/70 bg-indigo-50/50 px-4 py-3 text-sm text-indigo-950">
+                  <p className="text-[11px] font-bold uppercase tracking-wide text-indigo-800/90">Why it matters</p>
+                  <p className="mt-1.5 leading-relaxed text-indigo-950/90">
+                    Choosing the wrong automation pattern wastes time and budget. This wizard helps you align on{" "}
+                    <span className="font-semibold">what to build first</span> and <span className="font-semibold">how much autonomy</span> is appropriate.
+                  </p>
+                </div>
+              </div>
             </StepCard>
           )}
           {step.id === "use_case" && (
